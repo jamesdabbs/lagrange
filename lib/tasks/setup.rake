@@ -3,7 +3,7 @@ require 'open-uri'
 desc "Sets up user configuration and populates the Problems list"
 task :setup => :environment do
 
-  # -- EDITOR -----
+  puts "== Configuration ====="
   puts %{
     Lagrange attempts to provide links to open solutions in the editor
     of your choice. This may require some configuration (e.g. `subl-handler`
@@ -20,7 +20,10 @@ task :setup => :environment do
     YAML.dump(conf, f)
   end
 
-  # -- PROBLEMS ---
+  puts "\n== Database =========="
+  Rake::Task["db:setup"].invoke
+
+  puts "\n== Problems =========="
   print "Fetching problems from Project Euler ... "
   count = open('http://projecteuler.net/show=all').read.
     scan( /Problem \d+/ ).
@@ -30,24 +33,33 @@ task :setup => :environment do
 
   failed = []
   1.upto(count) do |n|
-    print progress(n, count)
+    Rake::Task.show_progress(n, count)
     p = Problem.find(n) rescue Problem.create!
     p.fetch rescue (failed << p.id)
   end
 
   unless failed.empty?
     puts "Some problems failed to fetch. You may need to manually re-fetch them."
-    puts "Failed fetches: #{failed.join(', ')}"
+    puts "Failed problem ids: #{failed.join(', ')}"
   end
+
+  puts "\n== Solutions ======"
+  Rake::Task["solutions:check"].invoke
+
   puts "\n\nSetup complete. Run `foreman start` to begin."
 end
 
-def progress(done, total)
-  digits   = total.to_s.length
-  used     = 2 * digits + 7
-  width    = `/usr/bin/env tput cols`.to_i - used
-  count    = "#{done.to_s.rjust(digits)} of #{total}"
-  progress = ((done / total.to_f) * width).to_i
-  fill     = ("=" * progress).ljust(width)
-  "\r#{count} [#{fill}]"
+module Rake
+  class Task
+    def self.show_progress(done, total)
+      digits   = total.to_s.length
+      used     = 2 * digits + 7
+      width    = `/usr/bin/env tput cols`.to_i - used
+      count    = "#{done.to_s.rjust(digits)} of #{total}"
+      progress = ((done / total.to_f) * width).to_i
+      fill     = ("=" * progress).ljust(width)
+      print "\r#{count} [#{fill}]"
+      puts  "" if done == total
+    end
+  end
 end
