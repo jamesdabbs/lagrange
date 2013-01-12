@@ -1,3 +1,4 @@
 Lagrange::Application.routes.draw do
-  resources :problems
+  root :to => 'problems#index'
+  resources :problems, :only => :show
 end
