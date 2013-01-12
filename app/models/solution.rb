@@ -32,6 +32,13 @@ class Solution < ActiveRecord::Base
   end
 
   class << self
+    def for_file(file)
+      toks     = file.split('/')
+      language = toks[-2].capitalize
+      number   = toks[-1].split('.').first.to_i
+      Problem.find(number).solution(language)
+    end
+
     def attempted
       select { |s| File.exists?(s.path) }
     end

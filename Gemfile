@@ -8,6 +8,9 @@ gem 'ffi'
 gem 'nokogiri'
 gem 'haml-rails'
 
+gem 'listen'
+gem 'rb-fsevent'
+
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
