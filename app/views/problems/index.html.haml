@@ -1,0 +1,10 @@
+%table
+  %thead
+    %tr
+      %th #
+      %td Title
+  %tbody
+    - @problems.each do |p|
+      %tr
+        %td= p.id
+        %td= link_to(p.title, problem_path(p))

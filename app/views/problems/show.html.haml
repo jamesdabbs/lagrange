@@ -1,0 +1,18 @@
+%h2= @problem.title
+%div
+  = @problem.prompt
+
+%h4 Solutions
+%table
+  %thead
+    %tr
+      %th Language
+      %th Answer
+      %th Run Time
+  %tbody
+    - @problem.solutions.each do |s|
+      %tr
+        %td= s.language
+        %td= s.answer
+        %td= s.runtime
+  
