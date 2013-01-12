@@ -16,3 +16,4 @@
 
 .rvmrc
 config/user.yml
+solutions/*
