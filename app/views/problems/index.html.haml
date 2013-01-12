@@ -1,6 +1,6 @@
-= will_paginate @problems
+= will_paginate @problems, class: "pagination pagination-centered"
 
-%table
+%table.table.table-hover
   %thead
     %tr
       %th #
@@ -14,3 +14,5 @@
         %td= link_to p.title, problem_path(p)
         - Language.each do |l|
           %td= solution_summary p, l
+
+= will_paginate @problems, class: "pagination pagination-centered"
