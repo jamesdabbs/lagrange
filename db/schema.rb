@@ -14,11 +14,9 @@
 ActiveRecord::Schema.define(:version => 20130111220241) do
 
   create_table "problems", :force => true do |t|
-    t.string   "title"
-    t.text     "prompt"
-    t.string   "answer"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.string "title"
+    t.text   "prompt"
+    t.string "answer"
   end
 
   create_table "solutions", :force => true do |t|
@@ -26,6 +24,8 @@ ActiveRecord::Schema.define(:version => 20130111220241) do
     t.integer "problem_id"
     t.string  "answer"
     t.string  "runtime"
+    t.string  "state",      :default => "new"
+    t.text    "error"
   end
 
 end

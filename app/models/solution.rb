@@ -6,53 +6,36 @@ class Solution < ActiveRecord::Base
     start        = Time.now
     self.answer  = code.solution
     self.runtime = Time.now - start
+    self.state   = :answered
+    save!
+    check
+  rescue
+    self.state   = :error
+    self.error   = $!.to_s
     save!
   end
 
-  def language
-    self.class.name.split('::').last
+  def check
+    # TODO: pull answers and compare, change state to correct / incorrect
   end
 
-  def extension
-    self.class.extension
+  def language
+    Language.by_name self.class.name.split('::').last
   end
 
   def dir_path
-    "#{Rails.root}/solutions/#{language}"
+    "#{Rails.root}/solutions/#{language.name.downcase}"
   end
 
   def path
-    "#{dir_path}/#{problem_id}.#{extension}"
+    "#{dir_path}/#{problem_id}.#{language.extension}"
   end
 
   class << self
-    def register_extension(ext, klass)
-      @extensions ||= {}
-      @extensions[ext] = klass
-    end
-
-    def extension(ext=nil)
-      if ext.nil?
-        @extension
-      else
-        klass = self
-        Solution.register_extension ext, klass
-        @extension = ext
-      end
-    end
-
-    def import(ext)
-      klass = @extensions[ext]
-      raise "Unrecognized extension: #{ext}" if klass.nil?
-      Dir["#{Rails.root}/solutions/**/*.#{ext}"].each do |path|
-        if path =~ /(\d+)\.#{ext}$/
-          klass.where(problem_id: $1).first_or_create!
-        end
-      end
+    def attempted
+      select { |s| File.exists?(s.path) }
     end
   end
-
-  private #---------------------------------------------------------------------
 
   def attach_code
     raise NotImplementedError
