@@ -7,6 +7,7 @@ class Solution < ActiveRecord::Base
     self.answer  = code.solution
     self.runtime = Time.now - start
     self.state   = :answered
+    self.error   = ''
     save!
     check
   rescue
