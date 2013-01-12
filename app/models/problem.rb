@@ -27,17 +27,4 @@ class Problem < ActiveRecord::Base
       solution.compute! if File.exists?(solution.path)
     end
   end
-
-  class << self
-    def populate
-      1.upto(409) do |n|
-        begin
-          find(n).fetch
-        rescue ActiveRecord::RecordNotFound
-          create!.fetch
-        end
-      end
-    end
-  end
-
 end
