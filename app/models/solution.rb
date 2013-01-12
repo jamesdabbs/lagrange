@@ -7,7 +7,7 @@ class Solution < ActiveRecord::Base
     self.answer  = code.solution
     self.runtime = Time.now - start
     self.state   = :answered
-    self.error   = ''
+    self.error   = nil
     save!
     check
   rescue
@@ -20,6 +20,14 @@ class Solution < ActiveRecord::Base
     # TODO: pull answers and compare, change state to correct / incorrect
   end
 
+  def notify
+    message = error.present? ? error : "#{answer} (in #{runtime} s)"
+    system %{ terminal-notifier 
+      -title    '#{file_name}' 
+      -subtitle '#{state.capitalize}'
+      -message  '#{message}' }.squish
+  end
+
   def language
     Language.by_name self.class.name.split('::').last
   end
@@ -28,8 +36,12 @@ class Solution < ActiveRecord::Base
     "#{Rails.root}/solutions/#{language.name.downcase}"
   end
 
+  def file_name
+    "#{problem_id}.#{language.extension}"
+  end
+
   def path
-    "#{dir_path}/#{problem_id}.#{language.extension}"
+    "#{dir_path}/#{file_name}"
   end
 
   class << self
@@ -49,5 +61,3 @@ class Solution < ActiveRecord::Base
     raise NotImplementedError
   end
 end
-
-Dir["#{Rails.root}/app/models/solution/*"].each { |f| require f }
