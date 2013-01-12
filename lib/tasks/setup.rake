@@ -48,7 +48,7 @@ task :setup => :environment do
     puts "Failed problem ids: #{failed.join(', ')}"
   end
 
-  puts "\n== Solutions ======"
+  puts "\n== Solutions ========="
   Rake::Task["solutions:check"].invoke
 
   puts "\n\nSetup complete. Run `foreman start` to begin."
