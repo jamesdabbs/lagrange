@@ -8,6 +8,7 @@ gem 'ffi'
 gem 'nokogiri'
 gem 'haml-rails'
 gem 'foreman'
+gem 'bootstrap-will_paginate'
 
 gem 'listen'
 gem 'rb-fsevent'

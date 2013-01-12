@@ -1,6 +1,6 @@
 class ProblemsController < ApplicationController
   def index
-    @problems = Problem.includes(:solutions).all
+    @problems = Problem.includes(:solutions).paginate(page: params[:page])
   end
 
   def show

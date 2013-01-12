@@ -5,6 +5,8 @@ class Problem < ActiveRecord::Base
 
   after_create :create_solutions
 
+  self.per_page = 50
+
   def url
     "http://projecteuler.net/problem=#{id}"
   end
