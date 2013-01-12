@@ -1,0 +1,26 @@
+%h3
+  = "#{@solution.problem_id}. #{@solution.problem.title}"
+  %small
+    = "(#{@solution.language})"
+
+= form_for :solution, html: { method: 'PUT' } do |f|
+  %table.table
+    %thead
+      %tr
+        %th
+        %th Answer
+        %th Runtime
+    %tbody
+      %tr
+        %td
+          = f.submit 'Re-run'
+        %td= @solution.answer  || '-'
+        %td= @solution.runtime || '-'
+
+= link_to(@solution.path, User.editor_url(@solution.path))
+
+%pre
+  - if @solution.has_code?
+    = @solution.code.gsub('<', '&lt;').html_safe
+  - else
+    = '-'

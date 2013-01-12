@@ -1,10 +1,10 @@
 class Solution::Ruby < Solution
   def attach_code
-    source = path
+    source = code
     m = Module.new do
-      instance_eval File.open(source, 'r').read
+      instance_eval source
     end
-    raise "#{source} did not define `solution`" unless m.respond_to?(:solution)
+    raise "#{path} did not define `solution`" unless m.respond_to?(:solution)
     m
   end
 end

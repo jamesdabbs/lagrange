@@ -44,6 +44,14 @@ class Solution < ActiveRecord::Base
     "#{dir_path}/#{file_name}"
   end
 
+  def has_code?
+    File.exists? path
+  end
+
+  def code
+    File.read path
+  end
+
   class << self
     def for_file(file)
       toks     = file.split('/')

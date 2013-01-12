@@ -1,6 +1,7 @@
 %h3
   = "#{@problem.id}."
   = link_to(@problem.title, @problem.url, :target => '_blank')
+
 .well
   = @problem.prompt.html_safe
 
@@ -14,7 +15,7 @@
   %tbody
     - @problem.solutions.each do |s|
       %tr
-        %td= link_to(s.language, User.editor_url(s.path))
+        %td= link_to(s.language, problem_solution_path(@problem, s))
         %td= s.answer
         %td= speed_info s
   
