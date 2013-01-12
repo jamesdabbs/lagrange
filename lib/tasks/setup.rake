@@ -25,6 +25,8 @@ task :setup => :environment do
     }, f)
   end
 
+  User.reload!
+
   puts "\n== Database =========="
   Rake::Task["db:setup"].invoke
 
