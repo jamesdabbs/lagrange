@@ -3,8 +3,12 @@
     %tr
       %th #
       %td Title
+      - Language.each do |l|
+        %td= l.name
   %tbody
     - @problems.each do |p|
       %tr
         %td= p.id
-        %td= link_to(p.title, problem_path(p))
+        %td= link_to p.title, problem_path(p)
+        - Language.each do |l|
+          %td= solution_summary p, l

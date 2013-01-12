@@ -1,6 +1,6 @@
 class ProblemsController < ApplicationController
   def index
-    @problems = Problem.all
+    @problems = Problem.includes(:solutions).all
   end
 
   def show
