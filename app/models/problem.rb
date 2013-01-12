@@ -24,7 +24,6 @@ class Problem < ActiveRecord::Base
   def create_solutions
     Language.each do |l|
       solution = l.solution_class.where(problem_id: id).first_or_create!
-      solution.compute! if File.exists?(solution.path)
     end
   end
 end
