@@ -13,7 +13,7 @@ class Problem < ActiveRecord::Base
     doc = Nokogiri::HTML(open(url))
     raise "No problem found" unless doc.title =~ /^Problem #{id}/
     self.title  = doc.at_css('h2').text.strip
-    self.prompt = doc.at_css('.problem_content').text.strip
+    self.prompt = doc.at_css('.problem_content').inner_html
     save!
   end
 

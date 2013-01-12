@@ -1,6 +1,6 @@
-%h2= @problem.title
+%h2= link_to(@problem.title, @problem.url, :target => '_blank')
 %div
-  = @problem.prompt
+  = @problem.prompt.html_safe
 
 %h4 Solutions
 %table
