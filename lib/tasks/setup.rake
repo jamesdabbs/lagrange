@@ -4,20 +4,25 @@ desc "Sets up user configuration and populates the Problems list"
 task :setup => :environment do
 
   puts "== Configuration ====="
+  puts "What directory will contain your solutions?"
+  solution_path = prompt "#{Rails.root}/solutions"
+
   puts %{
     Lagrange attempts to provide links to open solutions in the editor
     of your choice. This may require some configuration (e.g. `subl-handler`
     for Sublime Text 2).
   }.squish
   puts  "\nPlease enter your preferred editor protocol (e.g. subl, txmt, mvim):"
-  print "Enter for `subl` > "
-  editor = STDIN.gets.strip
+  editor = prompt "subl"
 
   conf = { "editor" => editor.empty? ? "subl" : editor }
 
-  puts "\nStoring configuration ...\n"
+  puts "Storing configuration ...\n"
   File.open("#{Rails.root}/config/user.yml", 'w') do |f|
-    YAML.dump(conf, f)
+    YAML.dump({
+      "editor"        => editor,
+      "solution_path" => solution_path
+    }, f)
   end
 
   puts "\n== Database =========="
@@ -47,6 +52,13 @@ task :setup => :environment do
   Rake::Task["solutions:check"].invoke
 
   puts "\n\nSetup complete. Run `foreman start` to begin."
+end
+
+def prompt(default)
+  print "Enter for `#{default}` > "
+  value = STDIN.gets.strip
+  puts ""
+  value.empty? ? default : value
 end
 
 module Rake

@@ -1,10 +1,8 @@
 desc "Listens for changes to the solutions directory"
 task :listen => :environment do
-  root = "#{Rails.root}/solutions"
+  puts "Watching #{User.solution_path} for changes ..."
 
-  puts "Watching #{root} for changes ..."
-
-  Listen.to(root) do |m, a, r|
+  Listen.to(User.solution_path) do |m, a, r|
     (m + a + r).each do |file|
       print "Checking `#{file}` ... "
       s = Solution.for_file(file)

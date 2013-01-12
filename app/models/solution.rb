@@ -33,7 +33,7 @@ class Solution < ActiveRecord::Base
   end
 
   def dir_path
-    "#{Rails.root}/solutions/#{language.name.downcase}"
+    "#{User.solution_path}/#{language.name.downcase}"
   end
 
   def file_name
