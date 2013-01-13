@@ -24,3 +24,4 @@ Lagrange currently supports solutions in Ruby and C. To add support for a new la
 - Site UI (re-compute, re-check links, color code by time, style)
 - Submit / fetch answers from PE
 - Add Haskell support, make languages more pluggable
+- Async checking of solutions

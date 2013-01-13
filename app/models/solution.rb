@@ -37,7 +37,7 @@ class Solution < ActiveRecord::Base
   end
 
   def file_name
-    "#{problem_id}.#{language.extension}"
+    "#{problem_id.to_s.rjust(3, '0')}.#{language.extension}"
   end
 
   def path
